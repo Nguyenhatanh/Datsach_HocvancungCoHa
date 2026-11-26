@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đặt sách</title>
+<meta name="description" content="Trang đặt sách trực tuyến">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+/* ===== Giao diện: nền kem ấm, xanh ngọc, chữ serif ===== */
+:root{--ink:#2b3d38;--muted:#6c7873;--line:#eadfce;--bg:#faf3ea;--card:#fffdf9;--teal:#3f6b63;--teal-d:#315750;--amber:#b0742a;--amber-bg:#f6e8d2;--price:#a63a2b;--ok:#2d7a55;--serif:'Newsreader',Georgia,serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:'Be Vietnam Pro',system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#fffdf9 0,var(--bg) 320px);background-color:var(--bg);line-height:1.65}
+a{color:var(--teal)}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+/* thanh trên */
+.top{position:sticky;top:0;z-index:10;background:rgba(255,253,249,.94);backdrop-filter:blur(8px);border-top:3px solid #1f4a44;border-bottom:1px solid var(--line)}
+.top-in{max-width:1120px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand small{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.brand b{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);line-height:1.25}
+nav{display:flex;align-items:center;gap:22px;font-weight:600;font-size:15px;white-space:nowrap}
+nav a{text-decoration:none;color:var(--teal-d)}nav a:hover{color:var(--amber)}
+nav a.navbtn{background:var(--teal);color:#fff;padding:11px 22px;border-radius:12px;box-shadow:0 4px 12px rgba(63,107,99,.25)}
+nav a.navbtn:hover{background:var(--teal-d);color:#fff}
+/* hero hai cột */
+.hero{max-width:1120px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center}
+.author{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5.2vw,56px);line-height:1.1;margin:12px 0 6px;color:#2a3f3a}
+.sub{font-size:clamp(22px,3vw,30px);font-weight:600;color:var(--teal);font-family:var(--serif)}
+.badge{display:inline-block;margin:16px 0 18px;padding:9px 18px;border:1px solid #e2c99e;background:var(--amber-bg);color:var(--amber);border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.bio{font-size:17px;color:#475650;margin-bottom:18px}
+.hero ul{list-style:none;padding:0;margin:0 0 26px}
+.hero li{position:relative;padding-left:32px;margin:11px 0;font-size:17px;color:#475650}
+.hero li::before{content:"";position:absolute;left:3px;top:.62em;width:10px;height:10px;background:var(--teal);transform:rotate(45deg)}
+.buy{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-bottom:34px}
+.price b{display:block;font-family:var(--serif);font-size:40px;font-weight:600;color:var(--price);line-height:1.1}
+.price span{font-size:14px;color:var(--muted)}
+.btn{display:inline-block;padding:15px 28px;border-radius:12px;font:600 16px 'Be Vietnam Pro',sans-serif;text-decoration:none;border:1.5px solid var(--teal);background:var(--teal);color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(63,107,99,.25)}
+.btn:hover{background:var(--teal-d)}
+.btn.ghost{background:var(--card);color:var(--teal-d);border-color:var(--line);box-shadow:none}
+.btn.ghost:hover{background:#f3ebdd}
+.btn:disabled{opacity:.6;cursor:wait}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.stat{padding:22px 12px;text-align:center;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--serif);font-size:38px;font-weight:600;color:var(--teal-d);line-height:1.1}
+.stat small{display:block;color:#8a948f;font-size:14px;margin-top:4px;line-height:1.35}
+.cover-wrap{display:flex;justify-content:center;padding:10px}
+.cover{display:block;width:min(100%,430px);border-radius:7px;transform:rotate(1.6deg);box-shadow:0 30px 60px rgba(70,60,40,.28),0 6px 14px rgba(70,60,40,.12);background:#fff}
+/* các mục bên dưới */
+.wide{max-width:1120px;margin:0 auto;padding:0 24px}
+.sec{margin-top:44px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.6vw,42px);line-height:1.2;margin:10px 0 28px;color:#2a3f3a;max-width:920px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:30px 32px}
+.card h3{font-family:var(--serif);font-size:24px;font-weight:600;margin:10px 0 8px;color:#2a3f3a;line-height:1.3}
+.card p{color:var(--muted);font-size:16px;line-height:1.75}
+.card .lead{font-size:20px;line-height:1.7;margin-top:14px;color:#3a4b46}
+.card .big{font-family:var(--serif);font-size:clamp(24px,3vw,32px);font-weight:600;margin:12px 0 6px;color:#2a3f3a;line-height:1.3}
+.num{width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:700;margin-bottom:12px}
+.checks{list-style:none;padding:0;margin:20px 0 0}
+.checks li{display:flex;gap:14px;align-items:center;margin:15px 0;font-size:18px;color:#475650}
+.checks li::before{content:"✓";flex:none;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:700}
+.linkcard{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:26px;padding:32px;transition:border-color .15s,transform .15s}
+.linkcard:hover{border-color:var(--teal);transform:translateY(-2px)}
+.linkcard h3{font-family:var(--serif);font-size:24px;font-weight:600;color:#2a3f3a;margin-bottom:6px}
+.linkcard p{color:#8a948f;font-size:16px;margin-bottom:16px}
+.linkcard .a{font-weight:700;color:var(--teal-d);font-size:16px}
+/* khu đặt sách */
+.band{background:#f4ecdc;border-top:1px solid var(--line);margin-top:64px;padding:64px 0 76px}
+.narrow{max-width:900px;margin:0 auto;padding:0 24px}
+.band .sub2{font-size:19px;color:#6c7873;line-height:1.75;margin:-8px 0 32px;max-width:760px}
+form,.panel{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:36px 40px;box-shadow:0 20px 50px rgba(120,100,60,.10)}
+.field{margin-bottom:26px}
+label.f{display:block;font-weight:700;font-size:18px;color:#2a3f3a}
+.req::after{content:" *";color:var(--price)}
+.hint{font-size:15px;color:#8a948f;margin:3px 0 10px}
+input[type=email],input[type=text],input[type=tel],input[type=number],textarea{width:100%;height:60px;padding:0 20px;border:1.5px solid var(--line);border-radius:14px;font:17px 'Be Vietnam Pro',sans-serif;background:var(--card);color:var(--ink)}
+textarea{height:auto;min-height:110px;padding:16px 20px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(63,107,99,.15)}
+.combo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.opt{display:flex;gap:16px;align-items:center;padding:18px 20px;border:1.5px solid var(--line);border-radius:18px;cursor:pointer;background:var(--card)}
+.opt input{appearance:none;-webkit-appearance:none;flex:none;width:32px;height:32px;border:2px solid #b9b2a2;border-radius:50%;background:#fff;margin:0;display:grid;place-items:center}
+.opt input:checked{border-color:var(--teal)}
+.opt input:checked::after{content:"";width:16px;height:16px;border-radius:50%;background:var(--teal)}
+.opt:has(input:checked){border-color:var(--teal);background:#f0f6f4}
+.opt b{display:block;font-size:20px;font-weight:700;color:#2a3f3a}
+.opt small{display:block;color:var(--muted);font-size:15px;line-height:1.4}
+.note{margin-top:14px;padding:16px 20px;background:#f6e8d9;border-left:4px solid var(--amber);border-radius:0 14px 14px 0;font-size:16px;color:#4a4a40;line-height:1.6}
+.order{background:#f4ecdc;border:1px solid var(--line);border-radius:22px;padding:26px 30px 30px;margin:30px 0 24px}
+.order .eyebrow{color:#7d8b86;font-size:13px;margin-bottom:6px}
+.row{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px dotted #d3c2a2;font-size:17px;color:#5d6b66}
+.row b{color:#2a3f3a;font-weight:700;text-align:right;word-break:break-all}
+.row .warn{color:var(--price)}.row .dim{color:#8a948f;font-weight:600}
+.row.total{border-bottom:1px solid #e0d3b9;padding:22px 0}
+.row.total span{font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#2a3f3a;align-self:center}
+.row.total b{font-family:var(--serif);font-size:34px;color:var(--price);font-weight:600}
+.qrcap{text-align:center;font-size:15px;color:#8a948f;margin:26px 0 14px;border-top:1px dashed #d3c2a2;padding-top:22px}
+#qrBox{width:240px;height:240px;margin:0 auto;border:1px dashed #d3c2a2;border-radius:16px;display:grid;place-items:center;text-align:center;color:#8a948f;font-size:15px;padding:12px}
+#qrBox img{width:100%;height:100%;object-fit:contain;border-radius:10px}
+.btn.block{width:100%;padding:20px;font-size:18px;border-radius:14px}
+.err{color:var(--price);font-size:15px;margin:6px 0;min-height:20px}
+.status{font-weight:600;color:var(--teal);margin-top:10px;text-align:center}
+.submitnote{text-align:center;color:#8a948f;font-size:15px;margin-top:18px;line-height:1.8}
+.done{display:none}.done h2{color:var(--ok);margin-bottom:12px}
+/* chân trang */
+.foot{background:#2f5049;color:#d7e2de;padding:40px 0 34px}
+.foot-in{max-width:1120px;margin:0 auto;padding:0 24px}
+.foot-top{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.14)}
+.fname{font-family:var(--serif);font-size:24px;font-weight:600;color:#fff}
+.frole{margin-top:4px;color:#b9cbc5;font-size:17px}
+.flinks{display:flex;gap:12px;flex-wrap:wrap}
+.flinks a{color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:13px 22px;border:1px solid rgba(255,255,255,.35);border-radius:12px}
+.flinks a:hover{background:rgba(255,255,255,.1)}
+.fnote{padding-top:22px;font-size:15px;color:#a9bdb6}
+[hidden]{display:none!important}
+@media(max-width:860px){
+  .grid2,.combo{grid-template-columns:1fr}
+  form,.panel{padding:26px 20px}
+  .card,.linkcard{padding:24px}
+  .row.total b{font-size:28px}
+  .hero{grid-template-columns:1fr;gap:28px;padding-top:32px}
+  .cover-wrap{order:-1}.cover{width:min(78%,340px)}
+  nav a:not(.navbtn){display:none}
+  .brand b{font-size:17px}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand"><small id="series"></small><b id="brandTitle"></b></div>
+  <nav id="nav"></nav>
+</div></header>
+<main>
+  <section class="hero">
+    <div>
+      <div class="author" id="author"></div>
+      <h1 id="title"></h1>
+      <p class="sub" id="subtitle"></p>
+      <span class="badge" id="badge"></span>
+      <p class="bio" id="bio"></p>
+      <ul id="audience"></ul>
+      <div class="buy">
+        <div class="price"><b id="priceText"></b><span id="shipText"></span></div>
+        <div class="btns"><a class="btn" href="#dat-sach">Đặt sách ngay</a><a class="btn ghost" id="sampleBtn">Đọc thử trước</a></div>
+      </div>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="cover-wrap"><img class="cover" id="cover" alt="Bìa sách"></div>
+  </section>
+  <div class="wide">
+    <section class="sec" id="noi-dung"><div class="eyebrow">Nội dung sách</div><h2 id="partsHeading"></h2><div class="grid2" id="parts"></div></section>
+    <section class="sec" id="doc-gia"><div class="card"><div class="eyebrow">Dành cho ai</div><p class="lead" id="audienceText"></p></div></section>
+    <section class="sec" id="quyen-loi"><div class="card"><div class="eyebrow">Quyền lợi khi mua sách</div><div class="big" id="bonusTitle"></div><ul class="checks" id="bonus"></ul></div></section>
+    <section class="sec grid2" id="linkCards"></section>
+  </div>
+
+  <div class="band"><div class="narrow" id="dat-sach">
+    <div class="eyebrow">Đặt sách</div>
+    <h2 id="orderHeading"></h2>
+    <p class="sub2" id="orderSub"></p>
+
+    <form id="form" novalidate>
+      <div class="field"><label class="f req" for="email">Email</label>
+        <div class="hint">Nơi nhận thư xác nhận và tài liệu bản mềm</div>
+        <input type="email" id="email" name="email" autocomplete="email" required></div>
+
+      <div class="field"><label class="f req" for="name">Họ và tên</label>
+        <div class="hint">Vui lòng ghi đầy đủ</div>
+        <input type="text" id="name" name="name" autocomplete="name" required></div>
+
+      <div class="field"><label class="f req" for="phone">Số điện thoại</label>
+        <div class="hint">Số có liên kết với Zalo</div>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required></div>
+
+      <div class="field"><label class="f req" for="address">Địa chỉ giao hàng</label>
+        <div class="hint">Ghi theo địa chỉ mới sau sáp nhập</div>
+        <textarea id="address" name="address" required></textarea></div>
+
+      <div class="field"><label class="f req" for="qty">Số lượng sách</label>
+        <div class="hint">Ghi rõ 1, 2, 3…</div>
+        <input type="number" id="qty" name="qty" min="1" max="99" step="1" value="1" inputmode="numeric" required></div>
+
+      <div class="field"><label class="f req" id="comboLabel"></label>
+        <div class="hint">Bấm chọn một trong hai ô dưới đây</div>
+        <div class="combo">
+          <label class="opt"><input type="radio" name="combo" value="no" checked><span><b>Không</b><small id="comboNoText"></small></span></label>
+          <label class="opt"><input type="radio" name="combo" value="yes"><span><b>Có</b><small id="comboYesText"></small></span></label>
+        </div>
+        <div class="note" id="comboNote"></div></div>
+
+      <div class="field"><label class="f" for="note">Lời nhắn thêm tới tác giả</label>
+        <div class="hint">Không bắt buộc</div>
+        <textarea id="note" name="note"></textarea></div>
+
+      <div class="order">
+        <div class="eyebrow">Đơn của bạn</div>
+        <div id="summary"></div>
+        <div class="row"><span>Ngân hàng</span><b id="bankName"></b></div>
+        <div class="row"><span>Số tài khoản</span><b id="bankNo"></b></div>
+        <div class="row"><span>Chủ tài khoản</span><b id="bankHolder"></b></div>
+        <div class="row"><span>Nội dung chuyển khoản</span><b id="bankNote"></b></div>
+        <div class="qrcap">Quét mã để chuyển khoản — đã có sẵn số tiền và nội dung</div>
+        <div id="qrBox"></div>
+      </div>
+
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn block" type="submit" id="submitBtn">Gửi đơn đặt sách</button>
+      <div class="status" id="status"></div>
+      <div class="submitnote" id="submitNote"></div>
+    </form>
+
+    <div class="panel done" id="done">
+      <div class="eyebrow">Hoàn tất</div>
+      <h2>Đã ghi nhận đơn hàng</h2>
+      <p style="color:var(--muted);margin-bottom:12px">Vui lòng chuyển khoản theo thông tin dưới đây để hoàn tất đơn.</p>
+      <div id="doneInfo"></div>
+      <div class="btns" style="margin-top:24px">
+        <button class="btn ghost" id="again" type="button">Đặt thêm đơn khác</button>
+        <a class="btn" id="zaloBtn" target="_blank" rel="noopener">Nhắn Zalo</a>
+      </div>
+    </div>
+  </div></div>
+</main>
+<footer class="foot"><div class="foot-in">
+  <div class="foot-top"><div><div class="fname" id="fName"></div><div class="frole" id="fRole"></div></div><div class="flinks" id="fLinks"></div></div>
+  <div class="fnote" id="fNote"></div>
+</div></footer>
+
+<script>
+/* ============================================================
+   CẤU HÌNH — CHỈ CẦN SỬA KHỐI NÀY ĐỂ THAY THÔNG TIN SÁCH
+   ============================================================ */
+const CONFIG = {
+  pageTitle: "Đặt sách Chiến thuật đọc và viết theo thể loại",
+  series: "Nhà xuất bản Dân Trí",          // dòng nhỏ trên cùng bên trái
+  author: "Nguyễn Thị Hà – Đặng Thị Huyền",  // dòng tác giả màu vàng đồng
+  badge: "Dành cho GV, HS khối THCS, THPT",  // nhãn viên thuốc dưới tên sách
+  title: "Chiến thuật đọc và viết",
+  subtitle: "theo thể loại",
+  authorBio: "Cung cấp kiến thức, kĩ năng và bài mẫu tham khảo cho đọc hiểu văn bản và viết nghị luận văn học.",
+  audience: [
+    "Dành cho giáo viên, học sinh khối THCS, THPT",
+    "Dùng cho ôn tuyển sinh vào 10, ôn thi tốt nghiệp THPT theo chương trình mới",
+    "Dùng cho ôn luyện học sinh giỏi các cấp"
+  ],
+  price: 196000,
+  freeShip: true,
+  // Ảnh bìa: để trống = tự vẽ bìa tạm từ tên sách. Điền "cover.jpg" khi đã có ảnh trong cùng thư mục.
+  coverSrc: "cover.jpg",
+  // Trang đọc thử: file doc-thu.html hiển thị doc-thu.pdf (đổi file PDF để thay nội dung)
+  samplePage: "doc-thu.html",
+  navLinks: [                                         // link ngoài trên thanh menu (bỏ trống [] nếu không cần)
+    {label: "Phản hồi độc giả", href: "https://example.com/phan-hoi"}
+  ],
+  stats: [
+    {n: "90", t: "đề tuyển chọn"},
+    {n: "9", t: "chủ đề dẫn chứng"},
+    {n: "50+", t: "đề có hướng dẫn chi tiết"},
+    {n: "2026", t: "Tái bản"}
+  ],
+  partsHeading: "Gồm 4 phần — từ kĩ năng nền tảng đến đề thi, hướng dẫn làm bài và phụ lục.",
+  parts: [
+    {t: "Rèn luyện kĩ năng nền tảng", d: "Trang bị hệ thống kĩ năng đọc hiểu và viết bài, chia theo từng giai đoạn."},
+    {t: "Phương pháp làm các dạng bài cụ thể", d: "Hướng dẫn chi tiết từng dạng bài kèm ví dụ minh hoạ cụ thể."},
+    {t: "Đề thi, hướng dẫn làm bài, bài viết tham khảo", d: "Tuyển chọn đề bài từ cơ bản đến nâng cao, kèm hướng dẫn và bài viết tham khảo."},
+    {t: "Phụ lục", d: "Hệ thống kiến thức tổng hợp, bảng tóm tắt và tư liệu tra cứu nhanh."}
+  ],
+  audienceText: "Giáo viên và học sinh khối THCS, THPT. Phục vụ ôn kiểm tra định kì, ôn thi tuyển sinh vào lớp 10, ôn thi tốt nghiệp THPT và ôn luyện học sinh giỏi.",
+  bonusTitle: "Trọn bộ tài liệu bản mềm và group Zalo hỗ trợ riêng từ tác giả",
+  bonus: [
+    "Bộ đề điện tử (file mềm)",
+    "Kho dẫn chứng bản mềm",
+    "Group Zalo hỗ trợ riêng — kết nối trực tiếp với tác giả"
+  ],
+  linkCards: [   // 2 thẻ liên kết dưới mục quyền lợi
+    {t: "Đọc thử Chiến thuật đọc và viết", d: "Xem trước một phần nội dung sách", a: "Mở bản đọc thử", href: "doc-thu.html"},
+    {t: "Phản hồi độc giả", d: "Cảm nhận của những người đã đọc sách", a: "Xem phản hồi", href: "https://example.com/phan-hoi", ext: true}
+  ],
+  orderHeading: "Điền thông tin, hệ thống tạo sẵn mã QR cho bạn",
+  orderSub: "Số tiền và nội dung chuyển khoản được điền sẵn trong mã QR — bạn quét là chuyển, không phải gõ lại gì.",
+  combo: {
+    label: "Bạn có muốn mua kèm combo không?",
+    name: "Tên sách tập 1",
+    price: 196000,
+    noText: "Chỉ đặt cuốn sách này",
+    yesText: "Thêm 1 cuốn Tên sách tập 1",
+    note: "Cuốn mua kèm là bản tái bản, có chỉnh sửa và bổ sung. Xem trước:",
+    noteLink: "bấm vào đây để đọc thử"
+  },
+  bank: {
+    bin: "970422",                 // mã BIN ngân hàng (970422 = MB). Xem danh sách tại vietqr.io
+    name: "MB – TMCP Quân đội",
+    holder: "NGUYEN VAN A",
+    number: "0123456789"
+  },
+  submitNote: "Điền nhầm thông tin, nhắn Zalo tác giả:",
+  zaloLabel: "0123456789",
+  zaloUrl: "https://zalo.me/0123456789",
+  footer: {
+    name: "Nguyễn Thị Hà – Đặng Thị Huyền",
+    role: "Tác giả sách Chiến thuật đọc và viết theo thể loại",
+    links: [
+      {label: "Zalo 0123456789", href: "https://zalo.me/0123456789"},
+      {label: "Facebook", href: "https://facebook.com/"}
+    ],
+    note: "© 2026 Nguyễn Thị Hà – Đặng Thị Huyền · Nhà xuất bản Dân Trí."
+  },
+  // Nơi nhận đơn: dán URL Google Apps Script Web App (hoặc Formspree) vào đây.
+  // Để trống = chế độ thử: chỉ hiện trang xác nhận, KHÔNG gửi đi đâu.
+  orderEndpoint: ""
+};
+/* ================== HẾT PHẦN CẤU HÌNH ================== */
+
+const $ = id => document.getElementById(id);
+const vnd = n => n.toLocaleString("vi-VN") + "đ";
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function coverSvg(title){ // bìa tạm khi chưa có ảnh
+  const words = title.split(" "), lines = []; let cur = "";
+  words.forEach(w => { if ((cur + " " + w).trim().length > 14) { lines.push(cur.trim()); cur = w; } else cur += " " + w; });
+  lines.push(cur.trim());
+  const t = lines.slice(0,5).map((l,i)=>`<text x="150" y="${150+i*40}" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="700" fill="#fff">${esc(l)}</text>`).join("");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="420" viewBox="0 0 300 420"><rect width="300" height="420" fill="#1f4e79"/><rect x="14" y="14" width="272" height="392" fill="none" stroke="#e8c36a" stroke-width="2"/><text x="150" y="70" text-anchor="middle" font-family="Arial" font-size="13" letter-spacing="3" fill="#e8c36a">${esc(CONFIG.series.toUpperCase().slice(0,26))}</text>${t}</svg>`;
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+
+function render(){
+  document.title = CONFIG.pageTitle;
+  $("series").textContent = CONFIG.series;
+  $("brandTitle").textContent = `${CONFIG.title} ${CONFIG.subtitle}`;
+  $("author").textContent = CONFIG.author;
+  $("badge").textContent = CONFIG.badge;
+  $("title").textContent = CONFIG.title;
+  $("subtitle").textContent = CONFIG.subtitle;
+  $("bio").textContent = CONFIG.authorBio;
+  $("audience").innerHTML = CONFIG.audience.map(a=>`<li>${esc(a)}</li>`).join("");
+  $("priceText").textContent = vnd(CONFIG.price);
+  $("shipText").textContent = CONFIG.freeShip ? "Miễn phí vận chuyển toàn quốc" : "";
+  $("sampleBtn").href = CONFIG.samplePage; $("sampleBtn").removeAttribute("target");
+  $("cover").src = CONFIG.coverSrc || coverSvg(CONFIG.title);
+  $("stats").innerHTML = CONFIG.stats.map(s=>`<div class="stat"><b>${esc(s.n)}</b><small>${esc(s.t)}</small></div>`).join("");
+  $("partsHeading").textContent = CONFIG.partsHeading;
+  const roman = ["I","II","III","IV","V","VI","VII","VIII","IX","X"];
+  $("parts").innerHTML = CONFIG.parts.map((p,i)=>`<div class="card"><div class="eyebrow" style="font-size:12.5px">Phần ${roman[i]||i+1}</div><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></div>`).join("");
+  $("audienceText").textContent = CONFIG.audienceText;
+  $("bonusTitle").textContent = CONFIG.bonusTitle;
+  $("bonus").innerHTML = CONFIG.bonus.map(b=>`<li>${esc(b)}</li>`).join("");
+  $("linkCards").innerHTML = CONFIG.linkCards.map(c=>`<a class="linkcard" href="${esc(c.href)}"${c.ext?' target="_blank" rel="noopener"':''}><h3>${esc(c.t)}</h3><p>${esc(c.d)}</p><span class="a">${esc(c.a)} →</span></a>`).join("");
+  $("orderHeading").textContent = CONFIG.orderHeading;
+  $("orderSub").textContent = CONFIG.orderSub;
+  $("comboLabel").textContent = CONFIG.combo.label;
+  $("comboNoText").textContent = CONFIG.combo.noText;
+  $("comboYesText").textContent = `${CONFIG.combo.yesText} (+${vnd(CONFIG.combo.price)})`;
+  $("comboNote").innerHTML = `${esc(CONFIG.combo.note)} <a href="${esc(CONFIG.samplePage)}" target="_blank" rel="noopener">${esc(CONFIG.combo.noteLink)}</a>`;
+  $("bankName").textContent = CONFIG.bank.name;
+  $("bankHolder").textContent = CONFIG.bank.holder;
+  $("bankNo").textContent = CONFIG.bank.number;
+  $("zaloBtn").href = CONFIG.zaloUrl;
+  $("submitNote").innerHTML = `${esc(CONFIG.submitNote)} <a href="${esc(CONFIG.zaloUrl)}" target="_blank" rel="noopener">${esc(CONFIG.zaloLabel)}</a>`;
+  $("fName").textContent = CONFIG.footer.name;
+  $("fRole").textContent = CONFIG.footer.role;
+  $("fLinks").innerHTML = CONFIG.footer.links.map(l=>`<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("");
+  $("fNote").textContent = CONFIG.footer.note;
+  $("nav").innerHTML = `<a href="${esc(CONFIG.samplePage)}">Đọc thử</a>` +
+    CONFIG.navLinks.map(l=>`<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("") +
+    `<a class="navbtn" href="#dat-sach">Đặt sách</a>`;
+}
+
+function calc(){
+  const qty = Math.max(0, Math.floor(Number($("qty").value) || 0));
+  const combo = document.querySelector('input[name=combo]:checked').value === "yes";
+  const total = qty * CONFIG.price + (combo ? CONFIG.combo.price : 0);
+  return {qty, combo, total};
+}
+function transferNote(){
+  const name = $("name").value.trim(), phone = $("phone").value.replace(/\D/g,"");
+  return name && phone ? `${name} ${phone}`.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d").replace(/Đ/g,"D").toUpperCase() : "";
+}
+function refresh(){
+  const {qty, combo, total} = calc();
+  $("summary").innerHTML =
+    `<div class="row"><span>${esc(CONFIG.title)}</span><b>${qty} × ${vnd(CONFIG.price)}</b></div>` +
+    `<div class="row"><span>${esc(CONFIG.combo.name)} (mua kèm)</span>${combo ? `<b>${vnd(CONFIG.combo.price)}</b>` : `<b class="warn">Chưa chọn</b>`}</div>` +
+    `<div class="row"><span>Phí vận chuyển</span><b>${CONFIG.freeShip ? "Miễn phí" : "Theo thỏa thuận"}</b></div>` +
+    `<div class="row total"><span>Tổng thanh toán</span><b>${vnd(total)}</b></div>`;
+  const note = transferNote();
+  const bn = $("bankNote");
+  bn.textContent = note || "(điền tên + SĐT để hiện)"; bn.className = note ? "" : "dim";
+  const box = $("qrBox");
+  const ph = msg => { box.dataset.src = ""; box.innerHTML = `<span>${msg}</span>`; };
+  if (note && total > 0) {
+    // QR VietQR: ảnh tải từ img.vietqr.io (cần mạng; lỗi tải thì báo, người mua vẫn chuyển khoản theo thông tin chữ)
+    const url = `https://img.vietqr.io/image/${CONFIG.bank.bin}-${CONFIG.bank.number}-compact2.png?amount=${total}&addInfo=${encodeURIComponent(note)}&accountName=${encodeURIComponent(CONFIG.bank.holder)}`;
+    if (box.dataset.src !== url) {
+      box.dataset.src = url;
+      box.innerHTML = `<img alt="Mã QR chuyển khoản" src="${url}">`;
+      box.querySelector("img").onerror = () => ph("Không tải được mã QR, vui lòng chuyển khoản theo thông tin ở trên.");
+    }
+  } else ph("Nhập họ tên và số điện thoại để hiện mã QR");
+}
+
+function validate(){
+  const email = $("email").value.trim(), name = $("name").value.trim(),
+        phone = $("phone").value.replace(/\s/g,""), addr = $("address").value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Email chưa hợp lệ.";
+  if (name.length < 2) return "Vui lòng nhập họ và tên.";
+  if (!/^(0|\+84)\d{9}$/.test(phone)) return "Số điện thoại chưa hợp lệ (ví dụ 0912345678).";
+  if (addr.length < 10) return "Vui lòng nhập địa chỉ giao hàng đầy đủ.";
+  if (calc().qty < 1) return "Số lượng tối thiểu là 1.";
+  return "";
+}
+
+async function submitOrder(e){
+  e.preventDefault();
+  const msg = validate(); $("err").textContent = msg; if (msg) return;
+  const {qty, combo, total} = calc();
+  const order = {
+    time: new Date().toISOString(), book: CONFIG.title,
+    email: $("email").value.trim(), name: $("name").value.trim(),
+    phone: $("phone").value.trim(), address: $("address").value.trim(),
+    qty, combo: combo ? CONFIG.combo.name : "Không", total,
+    transferNote: transferNote(), note: $("note").value.trim()
+  };
+  const btn = $("submitBtn"); btn.disabled = true; $("status").textContent = "Đang ghi nhận đơn hàng…";
+  try {
+    if (CONFIG.orderEndpoint) {
+      // text/plain để tránh preflight CORS với Google Apps Script; phản hồi dạng opaque nên không đọc được
+      await fetch(CONFIG.orderEndpoint, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(order)});
+    } else {
+      console.warn("Chưa cấu hình orderEndpoint: đơn chỉ hiển thị, không được gửi đi.", order);
+    }
+    const r = (k,v) => `<div class="row"><span>${k}</span><b>${esc(v)}</b></div>`;
+    $("doneInfo").innerHTML = r("Người đặt", order.name) + r("Tổng tiền", vnd(total)) + r("Ngân hàng", CONFIG.bank.name) +
+      r("Số tài khoản", CONFIG.bank.number) + r("Chủ tài khoản", CONFIG.bank.holder) + r("Nội dung chuyển khoản", order.transferNote);
+    $("form").hidden = true; $("done").style.display = "block"; $("status").textContent = "";
+    $("dat-sach").scrollIntoView();
+  } catch (err) {
+    $("status").textContent = ""; $("err").textContent = "Gửi đơn thất bại, vui lòng kiểm tra mạng và thử lại.";
+  } finally { btn.disabled = false; }
+}
+
+render(); refresh();
+["input","change"].forEach(ev => $("form").addEventListener(ev, refresh));
+$("form").addEventListener("submit", submitOrder);
+$("again").addEventListener("click", () => { $("form").reset(); $("form").hidden = false; $("done").style.display = "none"; $("err").textContent = ""; refresh(); });
+</script>
+</body>
+</html>
