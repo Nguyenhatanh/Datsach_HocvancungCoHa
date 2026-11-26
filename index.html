@@ -157,7 +157,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 
     <section class="sec" id="noi-dung"><div class="eyebrow">Nội dung sách</div><h2 id="partsHeading"></h2><div class="grid2" id="parts"></div></section>
     <section class="sec" id="doc-gia"><div class="card"><div class="eyebrow">Dành cho ai</div><p class="lead" id="audienceText"></p></div></section>
     <section class="sec" id="quyen-loi"><div class="card"><div class="eyebrow">Quyền lợi khi mua sách</div><div class="big" id="bonusTitle"></div><ul class="checks" id="bonus"></ul></div></section>
-    <section class="sec grid2" id="linkCards"></section>
+    <section class="sec grid3" id="linkCards"></section>
   </div>
 
   <div class="band"><div class="narrow" id="dat-sach">
@@ -256,7 +256,8 @@ const CONFIG = {
   // Trang đọc thử: file doc-thu.html hiển thị doc-thu.pdf (đổi file PDF để thay nội dung)
   samplePage: "doc-thu.html",
   navLinks: [                                         // link ngoài trên thanh menu (bỏ trống [] nếu không cần)
-    {label: "Phản hồi độc giả", href: "https://example.com/phan-hoi"}
+    {label: "Điểm số học sinh", href: "diem-so.html"},
+    {label: "Phản hồi độc giả", href: "https://example.com/phan-hoi", ext: true}
   ],
   stats: [
     {n: "90", t: "đề tuyển chọn"},
@@ -278,8 +279,9 @@ const CONFIG = {
     "Kho dẫn chứng bản mềm",
     "Group Zalo hỗ trợ riêng — kết nối trực tiếp với tác giả"
   ],
-  linkCards: [   // 2 thẻ liên kết dưới mục quyền lợi
+  linkCards: [   // các thẻ liên kết dưới mục quyền lợi
     {t: "Đọc thử Chiến thuật đọc và viết", d: "Xem trước một phần nội dung sách", a: "Mở bản đọc thử", href: "doc-thu.html"},
+    {t: "Điểm số học sinh", d: "Bảng điểm thi của học sinh qua các năm", a: "Xem bảng điểm", href: "diem-so.html"},
     {t: "Phản hồi độc giả", d: "Cảm nhận của những người đã đọc sách", a: "Xem phản hồi", href: "https://example.com/phan-hoi", ext: true}
   ],
   orderHeading: "Điền thông tin, hệ thống tạo sẵn mã QR cho bạn",
@@ -368,7 +370,7 @@ function render(){
   $("fLinks").innerHTML = CONFIG.footer.links.map(l=>`<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("");
   $("fNote").textContent = CONFIG.footer.note;
   $("nav").innerHTML = `<a href="${esc(CONFIG.samplePage)}">Đọc thử</a>` +
-    CONFIG.navLinks.map(l=>`<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("") +
+    CONFIG.navLinks.map(l=>`<a href="${esc(l.href)}"${l.ext?' target="_blank" rel="noopener"':''}>${esc(l.label)}</a>`).join("") +
     `<a class="navbtn" href="#dat-sach">Đặt sách</a>`;
 }
 

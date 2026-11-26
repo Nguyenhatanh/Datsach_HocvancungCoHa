@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Điểm số học sinh qua các năm</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:#f3ebdd;color:#2b3d38}
+header{position:sticky;top:0;z-index:5;background:#fffdf9;border-top:3px solid #1f4a44;border-bottom:1px solid #eadfce}
+.bar{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar h1{font-size:16px;flex:1;min-width:180px;line-height:1.3}
+.btn{display:inline-block;padding:9px 16px;border-radius:11px;font:600 14px 'Be Vietnam Pro',sans-serif;text-decoration:none;border:1.5px solid #3f6b63;background:#3f6b63;color:#fff}
+.btn.ghost{background:#fffdf9;color:#315750;border-color:#eadfce}
+.btn:hover{opacity:.88}
+#viewer{max-width:900px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:14px;align-items:center}
+#viewer canvas{width:100%;height:auto;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.18);border-radius:3px}
+#msg{text-align:center;padding:40px 16px;color:#5d6678}
+.cta{text-align:center;padding:10px 16px 50px}
+.fallback{width:100%;height:85vh;border:0;background:#fff}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="btn ghost" href="index.html">← Quay lại</a>
+  <h1>Điểm số học sinh qua các năm</h1>
+  <a class="btn ghost" href="diem-so.pdf" download>Tải PDF</a>
+  <a class="btn" href="index.html#dat-sach">Đặt sách</a>
+</div></header>
+
+<main id="viewer"><div id="msg">Đang tải bảng điểm…</div></main>
+<div class="cta"><a class="btn" href="index.html#dat-sach">Đặt sách ngay</a></div>
+
+<!-- pdf.js vẽ từng trang ra canvas: hiển thị đủ trang trên cả điện thoại (iframe PDF trên iOS chỉ hiện trang 1) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const PDF_URL = "diem-so.pdf";   // đổi tên file PDF ở đây nếu cần
+const viewer = document.getElementById("viewer");
+
+function fallback(reason){ // pdf.js hỏng/không tải được: dùng trình xem PDF của trình duyệt
+  console.warn("pdf.js lỗi, dùng iframe:", reason);
+  viewer.innerHTML = `<iframe class="fallback" src="${PDF_URL}" title="Bảng điểm học sinh"></iframe>
+    <p style="text-align:center;font-size:14px">Không xem được? <a href="${PDF_URL}">Mở file PDF</a></p>`;
+}
+
+async function renderPdf(){
+  try {
+    if (!window.pdfjsLib) throw new Error("Không tải được pdf.js");
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    const pdf = await pdfjsLib.getDocument(PDF_URL).promise;
+    viewer.innerHTML = "";
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.min(viewer.clientWidth - 32, 900);
+    for (let i = 1; i <= pdf.numPages; i++) {          // vẽ tuần tự để không nghẽn bộ nhớ trên máy yếu
+      const page = await pdf.getPage(i);
+      const base = page.getViewport({scale: 1});
+      const vp = page.getViewport({scale: (width / base.width) * dpr});
+      const c = document.createElement("canvas");
+      c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+      c.setAttribute("aria-label", `Trang ${i}/${pdf.numPages}`);
+      viewer.appendChild(c);
+      await page.render({canvasContext: c.getContext("2d"), viewport: vp}).promise;
+    }
+  } catch (e) { fallback(e); }
+}
+renderPdf();
+</script>
+</body>
+</html>
