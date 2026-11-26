@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phản hồi độc giả</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b3d38;--muted:#6c7873;--line:#eadfce;--bg:#faf3ea;--teal:#3f6b63;--teal-d:#315750;--amber:#b0742a}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+header{position:sticky;top:0;z-index:5;background:rgba(255,253,249,.95);backdrop-filter:blur(8px);border-top:3px solid #1f4a44;border-bottom:1px solid var(--line)}
+.bar{max-width:1120px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar .sp{flex:1}
+.btn{display:inline-block;padding:9px 16px;border-radius:11px;font:600 14px 'Be Vietnam Pro',sans-serif;text-decoration:none;border:1.5px solid var(--teal);background:var(--teal);color:#fff}
+.btn.ghost{background:#fffdf9;color:var(--teal-d);border-color:var(--line)}
+.btn:hover{opacity:.88}
+.intro{max-width:1120px;margin:0 auto;padding:44px 20px 18px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+h1{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:clamp(30px,4.4vw,48px);line-height:1.15;margin:10px 0 12px;color:#2a3f3a}
+.intro p{color:var(--muted);font-size:18px;max-width:720px}
+.wall{max-width:1120px;margin:0 auto;padding:14px 20px 30px;column-count:3;column-gap:18px}
+.wall figure{break-inside:avoid;margin:0 0 18px;cursor:zoom-in;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 6px 18px rgba(120,100,60,.10);transition:transform .15s}
+.wall figure:hover{transform:translateY(-2px)}
+.wall img{display:block;width:100%;height:auto}
+.cta{text-align:center;padding:10px 20px 60px}
+.cta .btn{padding:15px 30px;font-size:16px}
+/* phóng to */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(15,18,28,.93);display:none;align-items:center;justify-content:center;padding:14px}
+.lb.on{display:flex}
+.lb img{max-width:min(94vw,820px);max-height:92vh;object-fit:contain;background:#fff;border-radius:8px}
+.lb button{position:absolute;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:26px;width:48px;height:48px;border-radius:50%;cursor:pointer}
+.lb button:hover{background:rgba(255,255,255,.3)}
+.lb .x{top:14px;right:14px}.lb .p{left:14px;top:50%;margin-top:-24px}.lb .n{right:14px;top:50%;margin-top:-24px}
+.lb .c{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#cfd6d3;font-size:14px}
+@media(max-width:900px){.wall{column-count:2}}
+@media(max-width:560px){.wall{column-count:1}.lb .p,.lb .n{display:none}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="btn ghost" href="index.html">← Quay lại</a>
+  <span class="sp"></span>
+  <a class="btn" href="index.html#dat-sach">Đặt sách</a>
+</div></header>
+
+<section class="intro">
+  <div class="eyebrow">Phản hồi độc giả</div>
+  <h1>Cảm nhận của học sinh sau khi học và thi</h1>
+  <p>Những tin nhắn và hình ảnh học sinh gửi lại sau các kì thi. Bấm vào từng ảnh để phóng to.</p>
+</section>
+
+<main class="wall" id="wall"></main>
+<div class="cta"><a class="btn" href="index.html#dat-sach">Đặt sách ngay</a></div>
+
+<div class="lb" id="lb" aria-modal="true" role="dialog">
+  <button class="x" id="lbX" aria-label="Đóng">×</button>
+  <button class="p" id="lbP" aria-label="Ảnh trước">‹</button>
+  <img id="lbImg" alt="">
+  <button class="n" id="lbN" aria-label="Ảnh sau">›</button>
+  <div class="c" id="lbC"></div>
+</div>
+
+<script>
+/* Danh sách ảnh phản hồi: thêm/bớt/đổi thứ tự ở đây (ảnh nằm trong thư mục phan-hoi/) */
+const COUNT = 18;
+const IMAGES = Array.from({length: COUNT}, (_, i) => `phan-hoi/f${String(i + 1).padStart(2, "0")}.jpg`);
+
+const wall = document.getElementById("wall");
+wall.innerHTML = IMAGES.map((src, i) =>
+  `<figure data-i="${i}"><img src="${src}" alt="Phản hồi của học sinh ${i + 1}" loading="${i < 6 ? "eager" : "lazy"}"></figure>`).join("");
+
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lbImg"), lbC = document.getElementById("lbC");
+let cur = 0;
+function show(i){ cur = (i + IMAGES.length) % IMAGES.length; lbImg.src = IMAGES[cur]; lbC.textContent = `${cur + 1} / ${IMAGES.length}`; lb.classList.add("on"); }
+function hide(){ lb.classList.remove("on"); }
+wall.addEventListener("click", e => { const f = e.target.closest("figure"); if (f) show(Number(f.dataset.i)); });
+document.getElementById("lbX").onclick = hide;
+document.getElementById("lbP").onclick = e => { e.stopPropagation(); show(cur - 1); };
+document.getElementById("lbN").onclick = e => { e.stopPropagation(); show(cur + 1); };
+lb.addEventListener("click", e => { if (e.target === lb) hide(); });
+document.addEventListener("keydown", e => {
+  if (!lb.classList.contains("on")) return;
+  if (e.key === "Escape") hide();
+  if (e.key === "ArrowRight") show(cur + 1);
+  if (e.key === "ArrowLeft") show(cur - 1);
+});
+</script>
+</body>
+</html>
